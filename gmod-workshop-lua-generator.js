@@ -4,7 +4,9 @@ const https = require('https');
 // Formats current local time as "dd/MM/yyyy at HH:mm"
 function now() {
     let date = new Date();
-    return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
+    let dateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    let timeString = `${date.getHours()}:${date.getMinutes() < 10 ? '0' : '' }${date.getMinutes()}`;
+    return `${dateString} at ${timeString}`;
 }
 
 async function httpGet(url) {
