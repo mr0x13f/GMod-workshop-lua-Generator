@@ -1,6 +1,7 @@
 const fs = require('fs');
 const https = require('https');
 
+// Formats current local time as "dd/MM/yyyy at HH:mm"
 function now() {
     let date = new Date();
     return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
@@ -27,6 +28,7 @@ async function httpGet(url) {
     });
 }
 
+// Removes text from a string until a certain search string is found, and the text that was removed
 function consumeUntil(text, search) {
     let startIndex = text.indexOf(search);
     let endIndex = startIndex + search.length;
@@ -35,6 +37,7 @@ function consumeUntil(text, search) {
     return [resultingText, consumedText];
 }
 
+// Generate lua code for a collection
 async function readCollection(collectionId) {
     let html = await httpGet(`https://steamcommunity.com/workshop/filedetails/?id=${collectionId}`);
     let lua = '';
@@ -51,6 +54,7 @@ async function readCollection(collectionId) {
     lua += '\n----------------------------------------------------------------------';
     lua += '\n';
 
+    // Collection items
     while(html.indexOf('<div class="collectionItemDetails">') > -1) {
         [html, _] = consumeUntil(html, '<div class="collectionItemDetails">');
         [html, _] = consumeUntil(html, 'href="https://steamcommunity.com/sharedfiles/filedetails/?id=');
@@ -65,6 +69,7 @@ async function readCollection(collectionId) {
     lua += '\n';
     lua += '\n';
 
+    // Child collections
     [html, _] = consumeUntil(html, 'class="collectionChildren">');
 
     while(html.indexOf('class="workshopItem">') > -1) {
@@ -72,6 +77,7 @@ async function readCollection(collectionId) {
         [html, _] = consumeUntil(html, 'href="https://steamcommunity.com/sharedfiles/filedetails/?id=');
         [html, childId] = consumeUntil(html, '"');
 
+        // Recursively read the child collection
         lua += await readCollection(childId);
     }
 
