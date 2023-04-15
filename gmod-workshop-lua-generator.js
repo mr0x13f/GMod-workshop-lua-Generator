@@ -65,9 +65,7 @@ async function readCollection(collectionId) {
         lua += `\nresource.AddWorkshop("${fileId}") -- ${fileName}`;
     }
 
-    lua += '\n';
-    lua += '\n';
-    lua += '\n';
+    lua += '\n\n\n';
 
     // Child collections
     [html, _] = consumeUntil(html, 'class="collectionChildren">');
