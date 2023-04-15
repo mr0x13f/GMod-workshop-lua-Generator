@@ -1,5 +1,6 @@
 # GMod workshop.lua Generator
-Node.js script for generating a workshop.lua file for a GMod Server based on a Steam Workshop collection
+Node.js script for generating a workshop.lua file for a GMod Server based on a Steam Workshop collection.
+Requires Node.js
 
 Usage:
 ```sh
